@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View } from 'react-native'
+import { Text, StyleSheet, View } from 'react-native'
 
 export default class Main extends Component {
   render() {
@@ -26,6 +26,6 @@ const styles = StyleSheet.create({
     },
     controllerData: {
         flex:1,
-        flexDirection: row
+        flexDirection: 'row'
     }
 });

@@ -7,9 +7,9 @@
     "test": "jest"
   },
   "dependencies": {
-    "bluetooth-serial-port": "^2.2.2",
     "react": "16.6.3",
-    "react-native": "0.58.6"
+    "react-native": "0.58.6",
+    "react-native-bluetooth-serial": "^1.0.0-rc1"
   },
   "devDependencies": {
     "babel-core": "7.0.0-bridge.0",

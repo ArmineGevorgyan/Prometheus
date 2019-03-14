@@ -1,15 +1,23 @@
 import React, { Component } from 'react'
 import { Text, View } from 'react-native'
+const connection = require("../Connection/connect.js");
+const hasConnected = connection.hasConnected;
+
 
 export default class Loading extends Component {
-    //send request to the controller to connect to Arduino
-    //display the logo and a spinner and "Connecting..." 
 
+  connection.btSerial.inquire();
   render() {
+
     return (
       <View>
-        <Text> textInComponent </Text>
+          { hasConnected() ? 
+          (<Text> Connected! </Text>) :
+          (<Text> Connecting to Arduino... </Text>) }
       </View>
-    )
+    );
   }
 }
+
+const styles = StyleSheet.create({
+});
