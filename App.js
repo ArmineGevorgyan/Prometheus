@@ -9,8 +9,9 @@
 
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
-import Main from './src/Components/Main.js';
+import Home from './src/Components/Home.js';
 import Connect from './src/Components/Connect.js';
+import { createStackNavigator, createAppContainer } from "react-navigation";
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -19,14 +20,22 @@ const instructions = Platform.select({
     'Shake or press menu button for dev menu',
 });
 
-type Props = {};
-export default class App extends Component<Props> {
+class App extends Component<Props> {
   render() {
-    return (
-      <Connect/>
-    );
+    return <AppContainer />;
   }
 }
+
+const AppNavigator = createStackNavigator({
+  Home: { screen: Home },
+  Connect: { screen: Connect }
+  },
+  {
+    initialRouteName: "Connect"
+  }
+);
+
+export default createAppContainer(AppNavigator);
 
 const styles = StyleSheet.create({
   container: {
