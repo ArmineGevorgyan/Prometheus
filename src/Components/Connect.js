@@ -20,7 +20,8 @@ export default class Connect extends Component<{}> {
       discovering: false,
       devices: [],
       unpairedDevices: [],
-      connected: false
+      connected: false,
+      input: ''
     };
   }
   componentWillMount() {
@@ -52,11 +53,29 @@ export default class Connect extends Component<{}> {
     BluetoothSerial.connect(device.id)
       .then(res => {
         console.log(`Connected to device ${device.name}`);
-
-        ToastAndroid.show(
-          `Connected to ${device.name}`,
-          ToastAndroid.SHORT
-        );
+        BluetoothSerial.write("Hello from the other side.\n Please send me the current & target temperatures. \n")
+        .then(res => {
+          console.log("response is ", res);
+          console.log("Successfuly wrote to device");
+          this.setState({ connected: true });
+        })
+        .then(() => {
+          setInterval(() => {
+            BluetoothSerial.readFromDevice().then((data) => {
+              this.state.input += data.trim();
+              if(data.trim() == '~'|| String.prototype.endsWith(data.trim(), "~")){
+                console.log(this.state.input.slice(0,-1));
+                this.state.input='';
+              }
+            });
+          }, 10);
+        })
+        .catch(err => console.log(err.message));
+          ToastAndroid.show(
+            `Connected to ${device.name}`,
+            ToastAndroid.SHORT
+          );
+        this.props.navigation.navigate('Home');
       })
       .catch(err => {
         ToastAndroid.show(
@@ -65,6 +84,7 @@ export default class Connect extends Component<{}> {
         console.log(err.message);
       });
   }
+
 
   _renderItem(item) {
     return (
@@ -112,16 +132,6 @@ export default class Connect extends Component<{}> {
         .catch(err => console.log(err.message));
     }
   }
-  
-  toggleSwitch() {
-    BluetoothSerial.write("Hello from the other side.\n")
-      .then(res => {
-        console.log("response is ", res);
-        console.log("Successfuly wrote to device");
-        this.setState({ connected: true });
-      })
-      .catch(err => console.log(err.message));
-  }
 
   render() {
     return (
@@ -139,7 +149,7 @@ export default class Connect extends Component<{}> {
           <Button
             onPress = {this.discoverAvailableDevices.bind(this)}
             title = "Scan for Devices"
-            color = "#CE6452"
+            color = "#4A4A4A"
           />
         </View>
         <FlatList
@@ -147,11 +157,6 @@ export default class Connect extends Component<{}> {
           data={this.state.devices}
           keyExtractor={item => item.id}
           renderItem={item => this._renderItem(item)}
-        />
-        <Button
-          onPress={this.toggleSwitch.bind(this)}
-          title="Switch(On/Off)"
-          color="#b81212"
         />
       </View>
     );
@@ -161,7 +166,7 @@ export default class Connect extends Component<{}> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#E1E1E1"
+    backgroundColor: "#FF7C68"
   },
   buttonContainer: {
     width: "90%",
@@ -181,13 +186,15 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "bold",
     fontSize: 20,
+    color: "white",
     flex: 1,
     marginTop: 6
   },
   deviceName: {
     fontSize: 17,
+    fontWeight: "bold",
     textAlign: "center",
-    color: "white"
+    color: "#4A4A4A"
   },
   deviceNameWrap: {
     marginLeft: "10%",
@@ -195,7 +202,7 @@ const styles = StyleSheet.create({
     marginTop: "2%",
     marginBottom: "2%",
     padding: 15,
-    borderRadius: 20,
-    backgroundColor: "#4A4A4A"
+    borderRadius: 50,
+    backgroundColor: "#FFF"
   }
 });

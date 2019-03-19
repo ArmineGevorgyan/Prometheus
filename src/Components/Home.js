@@ -2,6 +2,11 @@ import React, { Component } from 'react'
 import { Text, StyleSheet, View } from 'react-native'
 
 export default class Home extends Component {
+
+  componentWillMount(){
+    
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -16,16 +21,16 @@ export default class Home extends Component {
 }
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: "#FF7C68"
     },
     weather: {
-        flex: 1
+      flex: 1
     },
     controllerData: {
-        flex:1,
-        flexDirection: 'row'
+      flex:1,
+      flexDirection: 'row'
     }
 });
