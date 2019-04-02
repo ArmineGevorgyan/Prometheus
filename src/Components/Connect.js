@@ -51,38 +51,27 @@ export default class Connect extends Component<{}> {
   connect(device) {
     this.setState({ connecting: true });
     BluetoothSerial.connect(device.id)
+    .then(res => {
+      console.log(`Connected to device ${device.name}`);
+      BluetoothSerial.write("Hello from the other side.\n")
       .then(res => {
-        console.log(`Connected to device ${device.name}`);
-        BluetoothSerial.write("Hello from the other side.\n Please send me the current & target temperatures. \n")
-        .then(res => {
-          console.log("response is ", res);
-          console.log("Successfuly wrote to device");
-          this.setState({ connected: true });
-        })
-        .then(() => {
-          setInterval(() => {
-            BluetoothSerial.readFromDevice().then((data) => {
-              this.state.input += data.trim();
-              if(data.trim() == '~'|| String.prototype.endsWith(data.trim(), "~")){
-                console.log(this.state.input.slice(0,-1));
-                this.state.input='';
-              }
-            });
-          }, 10);
-        })
-        .catch(err => console.log(err.message));
-          ToastAndroid.show(
-            `Connected to ${device.name}`,
-            ToastAndroid.SHORT
-          );
-        this.props.navigation.navigate('Home');
+        console.log("response is ", res);
+        console.log("Successfuly wrote to device");
+        this.setState({ connected: true });
       })
-      .catch(err => {
-        ToastAndroid.show(
-          `Could not connect to ${device.name}`,
-          ToastAndroid.SHORT);
-        console.log(err.message);
-      });
+      .catch(err => console.log(err.message));
+      ToastAndroid.show(
+        `Connected to ${device.name}`,
+        ToastAndroid.SHORT
+      );
+      this.props.navigation.navigate('Loading');
+    })
+    .catch(err => {
+      ToastAndroid.show(
+        `Could not connect to ${device.name}`,
+        ToastAndroid.SHORT);
+      console.log(err.message);
+    });
   }
 
 
