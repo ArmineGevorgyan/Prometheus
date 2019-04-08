@@ -86,12 +86,11 @@ export default class Loading extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    textAlign: "center",
-    backgroundColor: "#FF7C68"
+    backgroundColor: "#FF7C68",
+    paddingTop: 100
   },
   fetchText: {
-    paddingTop: 30,
+    marginTop: 30,
     textAlign: "center",
     fontWeight: "bold",
     fontSize: 20,
