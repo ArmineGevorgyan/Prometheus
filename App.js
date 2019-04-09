@@ -11,6 +11,7 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
 import Home from './src/Components/Home.js';
 import Connect from './src/Components/Connect.js';
+import Settings from './src/Components/Settings.js';
 import Loading from './src/Components/Loading.js';
 import { createStackNavigator, createAppContainer } from "react-navigation";
 
@@ -30,10 +31,11 @@ class App extends Component<Props> {
 const AppNavigator = createStackNavigator({
     Home: { screen: Home },
     Connect: { screen: Connect },
+    Settings: { screen: Settings },
     Loading: { screen: Loading }
   },
   {
-    initialRouteName: "Connect"
+    initialRouteName: "Home"
   }
 );
 

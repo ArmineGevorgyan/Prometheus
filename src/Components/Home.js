@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, Text, StyleSheet, View, Button } from 'react-native';
+import { Image, Text, StyleSheet, View, Button, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { getLocation, getData } from 'react-native-weather-api';
 
@@ -10,44 +10,66 @@ export default class Home extends Component {
   };
   constructor(props) {
     super(props);
+    // var cityName = '';
+    // var temperature = '';
+    // var windSpeed = '';
+    // var humidity = '';
+    // var condition = '';
+    this.state = {
+      cityName: '...',
+      temperature: '...',
+      windSpeed: '...',
+      humidity: '...',
+      condition: '...'
+    };
   }
 
  
   render() {
     const { navigation } = this.props;
-    const currentTemp = navigation.getParam('currentTemp', 'Null');
-    const targetTemp = navigation.getParam('targetTemp', 'Null');
+    const currentTemp = navigation.getParam('currentTemp', '...');
+    const targetTemp = navigation.getParam('targetTemp', '...');
     getLocation();  
+    setTimeout(()=>{    
+      let data = new getData();
+      console.log(data);
+      console.log(this.state.cityName);
+      var cityName = data.city;
+      var temperature = data.tempC;
+      var windSpeed = data.windKph;
+      var condition = data.condition;
+      this.setState({
+        cityName,
+        temperature,
+        windSpeed,
+        condition
+      });  
+    }, 2000);
+    
 
-    let cityName = ""; 
-    let temperature = "";
-    let windSpeed = "";
-    let humidity = "";
-
-    setTimeout(function() {    
-    let data = new getData();
-    cityName = data.city;
-    temperature = data.tempC;
-    windSpeed = data.windKph;
-    console.log(data);
-        
-    },5000);
     return (
       <View style={styles.container}>
-        <Text style={styles.weather}> <Text> Current Weather/Outside Temperature </Text><Text>{temperature}</Text></Text>
+        <View style={styles.weather}>
+         <Text> City: <Text>{this.state.cityName}</Text></Text>
+         <Text> Outside Temperature: <Text>{this.state.temperature}</Text></Text>
+         <Text> Condition: <Text>{this.state.condition}</Text></Text>
+         <Text> Wind Speed: <Text>{this.state.windSpeed}</Text></Text>
+        </View>
         <View style={styles.controllerData}>
           <View style={styles.tempContainer}>
             <Text style={styles.tempTitle}> Current Temperature </Text>
-            <Text style={styles.tempValue}> {currentTemp}<Text style={styles.celcius}>C°</Text></Text>
+            <Text style={styles.tempValue}>{currentTemp}<Text style={styles.celcius}> C°</Text></Text>
           </View>
           <View style={styles.tempContainer}>
             <Text style={styles.tempTitle}> Target Temperature </Text>
-            <Text style={styles.tempValue}> {targetTemp} <Text style={styles.celcius}>C°</Text></Text>
+            <Text style={styles.tempValue}>{targetTemp}<Text style={styles.celcius}> C°</Text></Text>
           </View>
         </View>
         <View style={styles.buttonRow}>
           <Text style={styles.button}><Icon name="arrow-left" size={15} color="#4A4A4A" />   Statistics</Text>
-          <Text style={styles.button}>Settings   <Icon name="arrow-right" size={15} color="#4A4A4A" /></Text>
+          <TouchableOpacity onPress = {() => this.props.navigation.navigate('Loading', { goTo: 'Settings' }) }>
+            <Text style={styles.button}>Settings   <Icon name="arrow-right" size={15} color="#4A4A4A" /></Text>
+          </TouchableOpacity>
         </View>
       </View>
     )
@@ -107,6 +129,7 @@ const styles = StyleSheet.create({
       textAlign: "center"
     },
     celcius: {
-      fontSize: 17
+      fontSize: 17,
+      margin: 5
     }
 });

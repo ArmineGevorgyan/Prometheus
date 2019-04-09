@@ -64,7 +64,9 @@ export default class Connect extends Component<{}> {
         `Connected to ${device.name}`,
         ToastAndroid.SHORT
       );
-      this.props.navigation.navigate('Loading');
+      this.props.navigation.navigate('Loading', {
+        goTo: 'Home'
+      });
     })
     .catch(err => {
       ToastAndroid.show(

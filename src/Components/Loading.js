@@ -32,46 +32,40 @@ export default class Loading extends Component {
     });
   }
 
-  // getData(command){
-  //   BluetoothSerial.write(command);
-  //   let input='';
-  //   let interval = setInterval(() => {
-  //     BluetoothSerial.readFromDevice().then((data) => {
-  //       input += data.trim();
-  //       if(data!="" && (data.trim() === '~'|| String.prototype.endsWith(input, "~"))){
-  //         console.log(String.prototype.endsWith(input, '~'));
-  //         console.log(input.slice(0,-1));
-  //         clearInterval(interval);
-  //         return input.slice(0,-1);
-  //       }
-  //     });
-  //   }, 10);
-  // }
   render() {
-    // this.props.currentTemp = this.getData("Please send me the current temperature\n");
-    // this.props.targetTemp = this.getData("Please send me the target temperature\n");
-    
-    this.getData("Please send me the current temperature\n")
-    .then((result)=>{
-      console.log(result);
-      this.currentTemp = result;
-      console.log("currentTemp is " + this.currentTemp);
-    })
-    .then(() => {
-      this.getData("Please send me the target temperature\n")
+    const goTo = this.props.navigation.getParam('goTo', 'Home');
+
+    if(goTo==='Home'){
+      
+      this.getData("Please send me the current temperature\n")
       .then((result)=>{
         console.log(result);
-        this.targetTemp = result;
-        console.log("targetTemp is " + this.targetTemp); 
-        if(this.currentTemp && this.targetTemp){
-          this.props.navigation.navigate('Home', {
-            currentTemp: this.currentTemp,
-            targetTemp: this.targetTemp
+        this.currentTemp = result;
+        console.log("currentTemp is " + this.currentTemp);
+      })
+      .then(() => {
+        this.getData("Please send me the target temperature\n")
+        .then((result)=>{
+          console.log(result);
+          this.targetTemp = result;
+          console.log("targetTemp is " + this.targetTemp); 
+          if(this.currentTemp && this.targetTemp){
+            this.props.navigation.navigate('Home', {
+              currentTemp: this.currentTemp,
+              targetTemp: this.targetTemp
+            });
+          }
           });
-        }
-        });
-    })
-    .catch();
+      })
+      .catch();      
+    }
+    if(goTo==='Settings'){ 
+      this.props.navigation.navigate('Settings');
+
+    }
+    if(goTo==='Stats'){
+
+    }
     
 
     return (
