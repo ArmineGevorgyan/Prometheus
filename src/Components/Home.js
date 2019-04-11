@@ -37,11 +37,13 @@ export default class Home extends Component {
       var cityName = data.city;
       var temperature = data.tempC;
       var windSpeed = data.windKph;
+      var humidity = data.humidity;
       var condition = data.condition;
       this.setState({
         cityName,
         temperature,
         windSpeed,
+        humidity,
         condition
       });  
     }, 2000);
@@ -50,10 +52,11 @@ export default class Home extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.weather}>
-         <Text> City: <Text>{this.state.cityName}</Text></Text>
-         <Text> Outside Temperature: <Text>{this.state.temperature}</Text></Text>
-         <Text> Condition: <Text>{this.state.condition}</Text></Text>
-         <Text> Wind Speed: <Text>{this.state.windSpeed}</Text></Text>
+         <Text style={styles.city}>{this.state.cityName}</Text>
+         <Text style={styles.tempTitle}> {this.state.condition}</Text>
+         <Text style={styles.tempValue}> {this.state.temperature}<Text style={styles.celcius}> C°</Text></Text>
+         <Text style={styles.tempTitle}> Wind Speed: <Text>{this.state.windSpeed}</Text> <Text style={styles.celcius}>Km/h</Text></Text>
+         <Text style={styles.tempTitle}> Humidity: <Text>{this.state.humidity}</Text> <Text style={styles.celcius}>%</Text></Text>
         </View>
         <View style={styles.controllerData}>
           <View style={styles.tempContainer}>
@@ -81,7 +84,12 @@ const styles = StyleSheet.create({
       backgroundColor: "#FF7C68"
     },
     weather: {
-      flex: 4
+      flex: 4,
+      backgroundColor: '#4A4A4A',
+      borderRadius: 25,
+      marginLeft: '10%',
+      marginRight: '10%',
+      marginTop: '5%',
     },
     controllerData: {
       flex: 3,
@@ -131,5 +139,14 @@ const styles = StyleSheet.create({
     celcius: {
       fontSize: 17,
       margin: 5
+    },
+    city: {
+      color: '#FFF',
+      fontSize: 40,
+      fontWeight: "bold",
+      marginTop: '5%',
+      marginBottom: '5%',
+      textAlign: "center"
+      
     }
 });

@@ -35,7 +35,15 @@ export default class Loading extends Component {
   render() {
     const goTo = this.props.navigation.getParam('goTo', 'Home');
 
-    if(goTo==='Home'){
+    
+    if(goTo==='Settings'){ 
+      this.props.navigation.navigate('Settings');
+
+    }
+    else if(goTo==='Stats'){
+
+    }
+    else if(goTo==='Home'){
       
       this.getData("Please send me the current temperature\n")
       .then((result)=>{
@@ -58,13 +66,6 @@ export default class Loading extends Component {
           });
       })
       .catch();      
-    }
-    if(goTo==='Settings'){ 
-      this.props.navigation.navigate('Settings');
-
-    }
-    if(goTo==='Stats'){
-
     }
     
 
