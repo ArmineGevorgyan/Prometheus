@@ -7,6 +7,8 @@
     "test": "jest"
   },
   "dependencies": {
+    "accordion-collapse-react-native": "^0.1.9",
+    "native-base": "^2.12.1",
     "react": "16.6.3",
     "react-native": "0.58.6",
     "react-native-bluetooth-serial": "^1.0.0-rc1",
