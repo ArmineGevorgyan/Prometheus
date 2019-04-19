@@ -37,6 +37,11 @@ export default class Loading extends Component {
 
     
     if(goTo==='Settings'){ 
+      this.getData("Please send me the settings\n")
+      .then((result)=>{
+        console.log(result);
+        //parse into daily settings
+      })
       this.props.navigation.navigate('Settings');
 
     }
