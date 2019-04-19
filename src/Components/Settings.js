@@ -41,6 +41,7 @@ export default class Settings extends Component {
     if(!val){
       return "Input Must Not Be Empty!";
     }
+    return '';
   }
 
   handleSave(){
@@ -64,10 +65,7 @@ export default class Settings extends Component {
               defaultValue = {this.state.monday}
               onChangeText = {(monday) => {
                 let mondayError = this.validateTemp(monday);
-                if(mondayError){
-                  this.setState({mondayError});
-                }
-                this.setState({monday});
+                this.setState({monday, mondayError});
                 }
               }
             />
@@ -81,10 +79,7 @@ export default class Settings extends Component {
               defaultValue = {this.state.tuesday}
               onChangeText = {(tuesday) => {
                 let tuesdayError = this.validateTemp(tuesday);
-                if(tuesdayError){
-                  this.setState({tuesdayError});
-                }
-                this.setState({tuesday});
+                this.setState({tuesday, tuesdayError});
                 }
               }
             />
@@ -98,10 +93,7 @@ export default class Settings extends Component {
               defaultValue = {this.state.wednesday}
               onChangeText = {(wednesday) => {
                 let wednesdayError = this.validateTemp(wednesday);
-                if(wednesdayError){
-                  this.setState({wednesdayError});
-                }
-                this.setState({wednesday});
+                this.setState({wednesday, wednesdayError});
                 }
               }
             />
@@ -115,10 +107,7 @@ export default class Settings extends Component {
               defaultValue = {this.state.thursday}
               onChangeText = {(thursday) => {
                 let thursdayError = this.validateTemp(thursday);
-                if(thursdayError){
-                  this.setState({thursdayError});
-                }
-                this.setState({thursday});
+                this.setState({thursday, thursdayError});
                 }
               }
             />
@@ -132,10 +121,7 @@ export default class Settings extends Component {
               defaultValue = {this.state.friday}
               onChangeText = {(friday) => {
                 let fridayError = this.validateTemp(friday);
-                if(fridayError){
-                  this.setState({fridayError});
-                }
-                this.setState({friday});
+                this.setState({friday, fridayError});
                 }
               }
             />
@@ -149,10 +135,7 @@ export default class Settings extends Component {
               defaultValue = {this.state.saturday}
               onChangeText = {(saturday) => {
                 let saturdayError = this.validateTemp(saturday);
-                if(saturdayError){
-                  this.setState({saturdayError});
-                }
-                this.setState({saturday});
+                this.setState({saturday, saturdayError});
                 }
               }
             />
@@ -166,10 +149,7 @@ export default class Settings extends Component {
               defaultValue = {this.state.sunday}
               onChangeText = {(sunday) => {
                 let sundayError = this.validateTemp(sunday);
-                if(sundayError){
-                  this.setState({sundayError});
-                }
-                this.setState({sunday});
+                this.setState({sunday, sundayError});
                 }
               }
             />
