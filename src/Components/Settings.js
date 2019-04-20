@@ -20,7 +20,7 @@ export default class Settings extends Component {
       sunday: '',
     };
     this.state = {
-      monday: 'placeholder',
+      monday: '',
       tuesday: '',
       wednesday: '',
       thursday: '',
@@ -34,6 +34,7 @@ export default class Settings extends Component {
       fridayError: '',
       saturdayError: '',
       sundayError: '',
+      saveError: ''
     };
   }
   
@@ -41,10 +42,40 @@ export default class Settings extends Component {
     if(!val){
       return "Input Must Not Be Empty!";
     }
+    let temps = val.split(",");
+    if((temps.length%2===1 && temps.length!==1) || temps.length>8 || temps.lenght<1){
+      return "Please input 1, 2, 4, 6 or 8 values";
+    }
+    let nums = true;
+    let range = true;
+    temps.map((temp)=>{
+      if(isNaN(Number(temp))){
+        nums = false;
+      }
+      else{
+        if(temp>30 || temp<0){
+          range = false;
+        }
+      }
+    });
+    if(!nums){
+      return "Please input numbers only!";
+    }
+    if(!range){
+      return "Please input numbers between 1 and 30";
+    }
     return '';
   }
 
   handleSave(){
+    if(this.state.mondayError || this.state.tuesdayError || this.state.wednesdayError || this.state.thurdayError || this.state.fridayError || this.state.saturdayError || this.state.sundayError){
+      let saveError = "Please resolve all errors before saving!"
+      this.setState({saveError});
+      return;
+    }
+    let saveError = "";
+    this.setState({saveError});
+  
 
   }
   handleCancel(){
@@ -155,6 +186,7 @@ export default class Settings extends Component {
             />
           <Text style={styles.errorText}>  {this.state.sundayError}</Text>
         </View>
+        <Text style={styles.errorText}>  {this.state.saveError}</Text>
         
         <View style={styles.buttons}>
           <TouchableOpacity onPress = {() => this.handleCancel()}>
