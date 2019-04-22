@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet, ScrollView, TextInput, TouchableOpacity } from 'react-native'
+import { Text, View, StyleSheet, ScrollView, TextInput, TouchableOpacity, ToastAndroid } from 'react-native'
 import { HeaderBackButton } from 'react-navigation'
-import { Collapse, CollapseHeader, CollapseBody } from "accordion-collapse-react-native"
+import BluetoothSerial from "react-native-bluetooth-serial"
+// import { Collapse, CollapseHeader, CollapseBody } from "accordion-collapse-react-native"
 
 export default class Settings extends Component {
   static navigationOptions = ({ navigation }) => ({
@@ -10,23 +11,14 @@ export default class Settings extends Component {
   });
   constructor(props) {
     super(props);
-    const currSettings = {
-      monday: 'placeholder',
-      tuesday: '',
-      wednesday: '',
-      thursday: '',
-      friday: '',
-      saturday: '',
-      sunday: '',
-    };
     this.state = {
-      monday: '',
-      tuesday: '',
-      wednesday: '',
-      thursday: '',
-      friday: '',
-      saturday: '',
-      sunday: '',
+      monday: this.props.navigation.getParam('monday', ''),
+      tuesday: this.props.navigation.getParam('tuesday', ''),
+      wednesday: this.props.navigation.getParam('wednesday', ''),
+      thursday: this.props.navigation.getParam('thursday', ''),
+      friday: this.props.navigation.getParam('friday', ''),
+      saturday: this.props.navigation.getParam('saturday', ''),
+      sunday: this.props.navigation.getParam('sunday', ''),
       mondayError: '',
       tuesdayError: '',
       wednesdayError: '',
@@ -34,7 +26,16 @@ export default class Settings extends Component {
       fridayError: '',
       saturdayError: '',
       sundayError: '',
-      saveError: ''
+      saveError: '',
+      currSettings: {
+        monday: this.props.navigation.getParam('monday', ''),
+        tuesday: this.props.navigation.getParam('tuesday', ''),
+        wednesday: this.props.navigation.getParam('wednesday', ''),
+        thursday: this.props.navigation.getParam('thursday', ''),
+        friday: this.props.navigation.getParam('friday', ''),
+        saturday: this.props.navigation.getParam('saturday', ''),
+        sunday: this.props.navigation.getParam('sunday', '')
+      }
     };
   }
   
@@ -42,18 +43,18 @@ export default class Settings extends Component {
     if(!val){
       return "Input Must Not Be Empty!";
     }
-    let temps = val.split(",");
-    if((temps.length%2===1 && temps.length!==1) || temps.length>8 || temps.lenght<1){
-      return "Please input 1, 2, 4, 6 or 8 values";
+    let temps = val.split(" ");
+    if((temps.length % 2 === 1 && temps.length !== 1) || temps.length === 6 || temps.length > 8 || temps.lenght < 1){
+      return "Please input 1, 2, 4 or 8 values";
     }
     let nums = true;
     let range = true;
-    temps.map((temp)=>{
+    temps.map((temp) => {
       if(isNaN(Number(temp))){
         nums = false;
       }
       else{
-        if(temp>30 || temp<0){
+        if(temp == '' || temp == ' ' || temp > 30 || temp < 0){
           range = false;
         }
       }
@@ -67,19 +68,109 @@ export default class Settings extends Component {
     return '';
   }
 
-  handleSave(){
+  getSaveStr(val){
+    let result = '';
+    let temps = val.split(' ');
+    if(temps.length === 8){
+      result += val;
+      return result;
+    }
+    else if(temps.length === 4){
+      temps.map((temp) => {
+        result += temp + ' ' + temp + ' ';
+      });
+    }
+    else if(temps.length === 2){
+      temps.map((temp) => {
+        result += temp + ' ' + temp + ' ' + temp + ' ' + temp + ' ';
+      });
+    }
+    else if(temps.length === 1){
+      for( let i = 0; i < 8; i++){
+        result += temps + ' ';
+      }
+    }
+    else {
+      let saveError = "Please make sure no inputs are empty!";
+      this.setState({saveError});
+      return;
+    }
+    console.log(result.slice(0, -1));
+    return result.slice(0, -1); //remove last space
+  }
+
+  handleSave = async function (){
     if(this.state.mondayError || this.state.tuesdayError || this.state.wednesdayError || this.state.thurdayError || this.state.fridayError || this.state.saturdayError || this.state.sundayError){
       let saveError = "Please resolve all errors before saving!"
       this.setState({saveError});
       return;
     }
+    if(!this.state.monday || !this.state.tuesday || !this.state.wednesday || !this.state.thursday || !this.state.friday || !this.state.saturday || !this.state.sunday){
+      let saveError = "Please make sure no inputs are empty!"
+      this.setState({saveError});
+      return;
+    }
+
     let saveError = "";
     this.setState({saveError});
-  
 
+    let sunday = 'i ' + this.getSaveStr(this.state.sunday) + '\n';
+    let monday = 'j ' + this.getSaveStr(this.state.monday) + '\n';
+    let tuesday = 'k ' + this.getSaveStr(this.state.tuesday) + '\n';
+    let wednesday = 'l ' + this.getSaveStr(this.state.wednesday) + '\n';
+    let thursday = 'm ' + this.getSaveStr(this.state.thursday) + '\n';
+    let friday = 'n ' + this.getSaveStr(this.state.friday) + '\n';
+    let saturday = 'o ' + this.getSaveStr(this.state.saturday) + '\n';
+
+    //send to Arduino
+    try {    
+      if(!BluetoothSerial.isConnected()) {
+        throw new Error("Device not Connected")
+      } 
+      await BluetoothSerial.write(sunday);
+      await BluetoothSerial.write(monday);
+      await BluetoothSerial.write(tuesday);
+      await BluetoothSerial.write(wednesday);
+      await BluetoothSerial.write(thursday);
+      await BluetoothSerial.write(friday);
+      await BluetoothSerial.write(saturday);
+    }
+    catch(error){
+      console.log(error);
+      ToastAndroid.show(
+        `Something went wrong! Settings not Saved.`,
+        ToastAndroid.LONG
+      );
+      this.handleReset();
+      return;
+    }
+    ToastAndroid.show(
+      `Settings Saved!`,
+      ToastAndroid.SHORT
+    );
+
+    
+    this.props.navigation.navigate('Home');
   }
-  handleCancel(){
+  handleReset(){
+    let monday = this.state.currSettings.monday;
+    let tuesday = this.state.currSettings.tuesday;
+    let wednesday = this.state.currSettings.wednesday;
+    let thursday = this.state.currSettings.thursday;
+    let friday = this.state.currSettings.friday;
+    let saturday = this.state.currSettings.saturday;
+    let sunday = this.state.currSettings.sunday;
+    //erase all errors
+    let mondayError = '';
+    let tuesdayError = '';
+    let wednesdayError = '';
+    let thursdayError = '';
+    let fridayError = '';
+    let saturdayError = '';
+    let sundayError = '';
+    let saveError = '';
 
+    this.setState({monday, tuesday, wednesday, thursday, friday, saturday, sunday, mondayError, tuesdayError, wednesdayError, thursdayError, fridayError, saturdayError, sundayError, saveError});
   }
  
 
@@ -189,9 +280,9 @@ export default class Settings extends Component {
         <Text style={styles.errorText}>  {this.state.saveError}</Text>
         
         <View style={styles.buttons}>
-          <TouchableOpacity onPress = {() => this.handleCancel()}>
+          <TouchableOpacity onPress = {() => this.handleReset()}>
             <View style = {styles.saveWrap}>
-              <Text style = {styles.save}>Cancel</Text>
+              <Text style = {styles.save}>Reset</Text>
             </View>
           </TouchableOpacity>
 
