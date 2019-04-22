@@ -20,15 +20,14 @@ export default class Home extends Component {
       temperature: '...',
       windSpeed: '...',
       humidity: '...',
-      condition: '...'
+      condition: '...',
+      currentTemp: this.props.navigation.getParam('currentTemp', '...'),
+      targetTemp: this.props.navigation.getParam('targetTemp', '...'),
     };
   }
 
  
   render() {
-    const { navigation } = this.props;
-    const currentTemp = navigation.getParam('currentTemp', '...');
-    const targetTemp = navigation.getParam('targetTemp', '...');
     getLocation();  
     setTimeout(()=>{    
       let data = new getData();
@@ -61,11 +60,11 @@ export default class Home extends Component {
         <View style={styles.controllerData}>
           <View style={styles.tempContainer}>
             <Text style={styles.tempTitle}> Current Temperature </Text>
-            <Text style={styles.tempValue}>{currentTemp}<Text style={styles.celcius}> C°</Text></Text>
+            <Text style={styles.tempValue}>{this.state.currentTemp}<Text style={styles.celcius}> C°</Text></Text>
           </View>
           <View style={styles.tempContainer}>
             <Text style={styles.tempTitle}> Target Temperature </Text>
-            <Text style={styles.tempValue}>{targetTemp}<Text style={styles.celcius}> C°</Text></Text>
+            <Text style={styles.tempValue}>{this.state.targetTemp}<Text style={styles.celcius}> C°</Text></Text>
           </View>
         </View>
         <View style={styles.buttonRow}>

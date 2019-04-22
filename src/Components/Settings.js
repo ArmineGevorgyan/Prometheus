@@ -7,7 +7,9 @@ import BluetoothSerial from "react-native-bluetooth-serial"
 export default class Settings extends Component {
   static navigationOptions = ({ navigation }) => ({
     title: "Settings",
-    headerLeft: <HeaderBackButton onPress={() => navigation.navigate('Home')} />
+    headerLeft: <HeaderBackButton onPress={() => navigation.navigate('Loading', {
+        goTo: 'Home'
+      })} />
   });
   constructor(props) {
     super(props);
@@ -178,6 +180,10 @@ export default class Settings extends Component {
 
     return (
       <ScrollView style={styles.container}>
+        <View style={styles.info}> 
+          <Text style={styles.infoText}>Please insert 1, 2, 4 or 8 values to set the target temperatue for the whole day, every 12 hours, every 6 hours or every 3 hours respectively.</Text>
+          <Text style={styles.infoText}>Separate the values by a space and don't forget to save when you're done!</Text>
+        </View>
         <View>
           <Text style={styles.labelText}>Monday</Text>
           <TextInput
@@ -302,6 +308,21 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#FF7C68",
   },
+  info: {
+    marginTop: '4%',
+    marginLeft: '7%',
+    marginRight: '7%',
+    marginBottom: '2%',
+    padding: 15,
+    borderRadius: 25,
+    backgroundColor: "#4a4a4a"  
+  },
+  infoText: {
+    color: 'white',
+    fontSize: 15,
+    textAlign: 'center',
+    marginBottom: '1%',
+  },
   labelText: {
     marginLeft: '15%',
     marginTop: '2%',
@@ -342,7 +363,6 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   buttons: {
-    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-evenly'
   }

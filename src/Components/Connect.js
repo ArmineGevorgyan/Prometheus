@@ -53,7 +53,7 @@ export default class Connect extends Component<{}> {
     BluetoothSerial.connect(device.id)
     .then(res => {
       console.log(`Connected to device ${device.name}`);
-      BluetoothSerial.write("Hello from the other side.\n")
+      BluetoothSerial.write("Hello\n")
       .then(res => {
         console.log("response is ", res);
         console.log("Successfuly wrote to device");

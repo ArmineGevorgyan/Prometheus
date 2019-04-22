@@ -28,7 +28,7 @@ const AppNavigator = createStackNavigator({
     Loading: { screen: Loading }
   },
   {
-    initialRouteName: "Home"
+    initialRouteName: "Connect"
   }
 );
 

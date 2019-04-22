@@ -24,8 +24,9 @@ export default class Loading extends Component {
         let input ='';
         let interval = setInterval(async function() {
           const data = await BluetoothSerial.readFromDevice();
-          input += data.trim();
-          if(data!="" && (data.trim() === '%' || input.endsWith("%"))){
+          input += data;
+          console.log(input.trim().endsWith('%'));
+          if(data!="" && (data.trim() === '%' || data.trim().endsWith('%') || input.trim().endsWith('%'))){
             input = input.slice(0,-1);
             clearInterval(interval);
             resolve(input);
