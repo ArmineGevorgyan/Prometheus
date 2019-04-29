@@ -10,11 +10,6 @@ export default class Home extends Component {
   };
   constructor(props) {
     super(props);
-    // var cityName = '';
-    // var temperature = '';
-    // var windSpeed = '';
-    // var humidity = '';
-    // var condition = '';
     this.state = {
       cityName: '...',
       temperature: '...',
@@ -68,7 +63,6 @@ export default class Home extends Component {
           </View>
         </View>
         <View style={styles.buttonRow}>
-          <Text style={styles.button}><Icon name="arrow-left" size={15} color="#4A4A4A" />   Statistics</Text>
           <TouchableOpacity onPress = {() => this.props.navigation.navigate('Loading', { goTo: 'Settings' }) }>
             <Text style={styles.button}>Settings   <Icon name="arrow-right" size={15} color="#4A4A4A" /></Text>
           </TouchableOpacity>
@@ -104,7 +98,7 @@ const styles = StyleSheet.create({
       marginTop: '2%',
       flexDirection: 'row',
       alignItems: 'flex-end',
-      justifyContent: 'space-between'
+      justifyContent: 'center'
     },
     button:{
       backgroundColor: '#FFF',

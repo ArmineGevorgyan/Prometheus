@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Text, View, StyleSheet, ScrollView, TextInput, TouchableOpacity, ToastAndroid } from 'react-native'
 import { HeaderBackButton } from 'react-navigation'
 import BluetoothSerial from "react-native-bluetooth-serial"
-// import { Collapse, CollapseHeader, CollapseBody } from "accordion-collapse-react-native"
 
 export default class Settings extends Component {
   static navigationOptions = ({ navigation }) => ({
