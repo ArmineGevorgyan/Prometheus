@@ -71,7 +71,7 @@ export default class Loading extends Component {
         });
       })
 
-      //For Testing
+//For Testing
 //       let result = `18 20 20 20 20 20 15 15
 // 15 15 15 15 15 15 15 15
 // 15 15 15 15 15 15 15 15
@@ -132,7 +132,7 @@ export default class Loading extends Component {
         this.targetTemp = result[1].replace('TargetT:','');
         this.targetTemp = this.targetTemp.substring(0, this.targetTemp.indexOf('.'));
         console.log("currentTemp is " + this.currentTemp);
-        console.log("targetTemp is " + this.targetTemp); 
+        console.log("targetTemp is " + this.targetTemp);
       })
       .then(() => {
         if(this.currentTemp && this.targetTemp){

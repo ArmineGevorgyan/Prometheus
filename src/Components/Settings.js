@@ -151,7 +151,9 @@ export default class Settings extends Component {
     );
 
     
-    this.props.navigation.navigate('Home');
+    this.props.navigation.navigate('Loading', {
+      goTo: 'Home'
+    });
   }
   handleReset(){
     let monday = this.state.currSettings.monday;
